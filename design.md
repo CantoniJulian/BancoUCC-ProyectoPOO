@@ -4,57 +4,62 @@ title: Banco UCC
 ---
 classDiagram
     class Persona{
-      DNI
-      nombre
+      int DNI
+      string nombre
       Fecha año_Ingreso
-      Estado
+      bool estado
     }
     Cuenta
     Persona <|-- Cliente
     
 
     class Cuenta{
-        int CBU
-        moneda saldo
-        bool Deposito()
-        bool Extraccion()
+        -int CBU
+        -moneda saldo
+        +bool Deposito(moneda monto)
+        +bool Extraccion(mooneda monto)
     }
 
     class Transaccion{
-        moneda monto
-        IDRemitente
-        IDReceptor
-        Fecha FechaEmision
+        -int ntransaccion
+        -moneda monto
+        -int IDRemitente
+        -int IDReceptor
+        -Fecha FechaEmision
     }
     
     class Tarjeta{
-        int titular
-        moneda saldo
-        moneda limite
+        -int titular
+        -moneda saldo
+        -moneda limite
     }
 
-    
     class Cliente{
-        ID
-        tipo_Cliente
-
-        
+        -Transaccion *historial[]
+        -int ID
+        -char tipo_Cliente
+        +Transaccion Transferir()
     }
 
     class Fecha{
-        int hora
-        int dia
-        int mes
-        int año
+        -int hora
+        -int dia
+        -int mes
+        -int año
+        +operator+()
     }
 
     class Moneda{
-        monto
+        int monto
         char denom
+        +operator()
+
     }
 
+    class Datos{
+        -map<char, int> conversion
+        -Cliente listado_Clientes
+        +moneda conversion()
 
-
-
-
+    }
 ```
