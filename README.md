@@ -12,78 +12,75 @@ classDiagram
     %% --- Clases Principales ---
     
     class Banco {
-        -list~Cliente*~ clientes
-        -list~Transaccion*~ transacciones
+        -vector~Cliente*~ clientes
+        -vector~Transaccion*~ transacciones
         -GestorArchivos gestor
-        -map~pair~string,string~, double~ tasasConversion
-        +void altaCliente(DNI, Nombre, Tipo, Año)
-        +void bajaCliente(DNI)
-        +void registrarTransaccion(IDCliente, tipo, Moneda, cuenta)
-        +Moneda convertir(Moneda m, string denomDestino)
-        +Cliente* buscarCliente(int DNI)
-        +list~Cliente*~ listarClientes()
-        +list~Transaccion*~ listarTransaccionesPorCliente(int DNI)
-        +list~Transaccion*~ informeTransacciones(Fecha filtro)
+        -map~double, double~ tasasConversion
+        +Banco()
+        +bool altaCliente(Cliente* cliente)
+        +bool bajaCliente(double id)
+        +void buscarCliente(double id)
+        +void listadoClientes()
+        +void informeTransacciones()
+        +void informeTransacciones(double id)
+        +void informeTransacciones(Fecha desde, Fecha hasta)
     }
 
     class GestorArchivos {
-        +template~T~ void guardar(list~T*~ datos, string filename)
-        +template~T~ list~T*~ cargar(string filename)
+        +template~T~ void guardar(vector~T*~ datos, string filename)
+        +template~T~ vector~T*~ cargar(string filename)
     }
 
     %% --- Entidades (Persona y Cliente) ---
 
     class Persona {
-        <<abstract>>
-        #int DNI
+        #string DNI
         #string nombre
-        #Fecha anioIngreso
+        #Fecha ingreso
+        +Persona(string dni, string Nombre)
+        +string getDNI()
+        +string getNombre()
+        +Fecha getAnioIngreso()
+        +virtual ~Persona() = default
     }
 
     class Cliente {
         -double ID
         -string tipoCliente
         -bool estado
-        -list~Cuenta*~ cuentas
-        -Tarjeta* tarjetaCredito
+        -vector~CajaAhorro*~ cuentas
+        -Tarjeta* tarjeta
+        +Cliente(string dni, string Nombre, string Tipo)
+        +double getID()
+        +string getTipoCliente()
+        +bool getEstado()
+        +vector~CajaAhorro*~ getCuentas()
         +Tarjeta* getTarjeta()
-        +list~Cuenta*~ getCuentas()
+        +void setEstado(bool estado)
+        +void setTipoCliente(string tipo)
+        +void agregarCuenta(CajaAhorro* cuenta)
+        +void setTarjeta(Tarjeta* t)
     }
 
     %% --- Productos Bancarios (Cuenta y Tarjeta) ---
 
-    class Cuenta {
-        <<abstract>>
-        #string CBU
-        #Moneda saldo
-        +Cuenta(string denominacion)
-        +virtual bool depositar(Moneda m) = 0
-        +virtual bool extraer(Moneda m) = 0
-        +Moneda getSaldo()
-        +string getDenominacionSaldo()
-    }
-
     class CajaAhorro {
+        -string CBU
+        -Moneda saldo
+        -void generarCBU()
         +CajaAhorro(string denominacion)
-        +bool depositar(Moneda m)
-        +bool extraer(Moneda m)
+        +bool depositar(Moneda monto)
+        +bool extraer(Moneda monto)
+        +Moneda getSaldo()
+        +string getCBU()
     }
 
     class Tarjeta {
-        <<abstract>>
         #string nombreTarjeta
         #Moneda limite
+        +Tarjeta(string nombre, Moneda lim)
         +Moneda getLimite()
-    }
-
-    class TarjetaCredix {
-        -Moneda limite(250000, "ARS")
-        -string nombreTarjeta("Credix")
-    }
-
-    class TarjetaPremium {
-        -Moneda limite(500000, "ARS")
-        -string nombreTarjeta("Premium")
+        +virtual ~Tarjeta() = default
     }
 
     %% --- Clases de Datos y Utilidad ---
@@ -91,32 +88,46 @@ classDiagram
     class Transaccion {
         -int IDTransaccion
         -int IDCliente
+        -string CBU
         -Fecha fecha
-        -string tipo
         -Moneda monto
-        +friend ostream& operator<<(ostream& os, const Transaccion& t)
+        -void generarIDTransaccion()
+        +Transaccion(string cbu, Moneda m)
+        +int getIDTransaccion()
+        +int getIDCliente()
+        +string getCBU()
+        +Fecha getFecha()
+        +Moneda getMonto()
     }
 
     class Fecha {
         -int dia
         -int mes
         -int anio
+        +Fecha(int dia, int mes, int anio)
         +Fecha(string fechaStr)
         +int getDia()
         +int getMes()
         +int getAnio()
-        +friend bool operator==(const Fecha& a, const Fecha& b)
+        +void setDia(int d)
+        +void setMes(int m)
+        +void setAnio(int a)
+        +friend ostream& operator<<(ostream& os, const Fecha& f)
+        +friend bool operator==(const Fecha& f1, const Fecha& f2)
     }
 
     class Moneda {
         -double monto
         -string denominacion
         +Moneda(double m, string d)
+        +Moneda(string d)
         +double getMonto()
         +string getDenominacion()
-        +friend Moneda operator+(const Moneda& a, const Moneda& b)
-        +friend Moneda operator-(const Moneda& a, const Moneda& b)
+        +friend Moneda operator+(const Moneda& m1, const Moneda& m2)
+        +friend Moneda operator-(const Moneda& m1, const Moneda& m2)
         +friend ostream& operator<<(ostream& os, const Moneda& m)
+        +friend bool operator>(const Moneda& m1, const Moneda& m2)
+        +friend bool operator<(const Moneda& m1, const Moneda& m2)
     }
 
     %% --- Relaciones ---
@@ -127,44 +138,39 @@ classDiagram
 
     Persona <|-- Cliente
 
-    Cliente "1" *-- "0..*" Cuenta : posee
+    Cliente "1" *-- "0..*" CajaAhorro : posee
     Cliente "1" *-- "0..1" Tarjeta : posee
-
-    Cuenta <|-- CajaAhorro
-
-    Tarjeta <|-- TarjetaCredix
-    Tarjeta <|-- TarjetaPremium
 
     Transaccion "1" -- "1" Fecha : ocurreEn
     Transaccion "1" -- "1" Moneda : tieneUn
-    Cuenta "1" -- "1" Moneda : tieneUnSaldo
+    CajaAhorro "1" -- "1" Moneda : tieneUnSaldo
     Tarjeta "1" -- "1" Moneda : tieneUnLimite
 ```
 
 ## Descripción del diagrama
-La clase central del sistema es **Banco**, que actúa como el facade o **gestor principal**, administrando las **colecciones de Cliente y Transaccion**. Utiliza un **GestorArchivos** para la persistencia de datos y mantiene un registro de tasas de conversión para operaciones con divisas. Realiza las siguientes funciones:
-- Alta/Baja de clientes, 
-- registro de transacciones,
-- búsqueda, 
-- listado,
-- informes (incluyendo conversión interna de Moneda)
 
-El **GestorArchivos** implementa la lógica de persistencia de datos al guardar y cargar colecciones de objetos (template T) de forma segura, validando el tipo de dato en el tiempo de ejecución y evitando que el proceso principal se congele.
+La clase central del sistema es **Banco**, que actúa como el facade o **gestor principal**, administrando las colecciones de **Cliente** y **Transaccion** (almacenadas como `vector` de punteros). Utiliza un **GestorArchivos** para la persistencia de datos y mantiene un registro de `map<double, double>` para tasas de conversión. Realiza las siguientes funciones:
+
+  - Alta/Baja de clientes,
+  - registro de transacciones,
+  - búsqueda,
+  - listado,
+  - informes.
+
+El **GestorArchivos** implementa la lógica de persistencia de datos al guardar y cargar colecciones de objetos (template T, usando `vector`) de forma segura.
 
 El sistema distingue entre la información básica de una persona y el rol de cliente bancario.
-- Persona (<<abstract>>): clase base que define los atributos de identificación comunes: DNI, nombre y el anioIngreso (utilizando la clase Fecha).
-- Cliente: hereda de Persona y añade atributos específicos del cliente (ID, tipoCliente, estado). Un cliente posee múltiples **Cuenta**s y puede poseer una única Tarjeta.
 
-Además, se define una jerarquía para los productos financieros, basada en clases abstractas.
-- ***Cuentas***
-→ **Cuenta (<<abstract>>):** clase base para todos los tipos de cuentas. Define el CBU y el saldo (de tipo Moneda). Establece la interfaz para las operaciones básicas con métodos virtuales puros: depositar() y extraer().
-	→ **CajaAhorro:** implementación concreta de Cuenta, proporcionando la lógica específica para las operaciones de depósito y extracción.
+  - **Persona**: clase base que define los atributos de identificación comunes: DNI (`string`), nombre y el `ingreso` (utilizando la clase Fecha).
+  - **Cliente**: hereda de Persona y añade atributos específicos del cliente (ID, tipoCliente, estado). Un cliente posee múltiples **CajaAhorro** (`vector<CajaAhorro*>`) y puede poseer una única **Tarjeta** (`Tarjeta*`).
 
-- ***Tarjetas***
-→ **Tarjeta (<<abstract>>):** clase base que establece la interfaz para las tarjetas, definiendo un nombreTarjeta y un limite (de tipo Moneda).
-	→ **TarjetaCredix y TarjetaPremium:** implementaciones concretas de Tarjeta, que se diferencian principalmente por su limite de crédito predefinido (e.g., $250.000 y $500.000 ARS, respectivamente).
+Además, se definen clases concretas para los productos financieros:
+
+  - **CajaAhorro**: Define el CBU y el saldo (de tipo Moneda). Proporciona la lógica específica para las operaciones de `depositar()` y `extraer()`.
+  - **Tarjeta**: Define una interfaz para las tarjetas, con un `nombreTarjeta` y un `limite` (de tipo Moneda).
 
 Finalmente, se usan clases adicionales para el formato de los datos como Moneda, Fecha y Transacción
-- **Moneda:** encapsula un monto (double) junto a su denominacion (string). Sobrecarga los operadores de suma (+) y resta (-) para facilitar operaciones monetarias y permite su output a streams (ostream).
-- **Fecha:** almacena día, mes y año. Permite la construcción a partir de un string y sobrecarga el operador de igualdad (==) para comparaciones.
-- **Transaccion:** registra las operaciones realizadas. Contiene IDTransaccion, IDCliente, tipo (e.g., "depósito", "extracción"), la fecha y el monto (de tipo Moneda).
+
+  - **Moneda**: encapsula un monto (double) junto a su `denominacion` (string). Sobrecarga los operadores de suma (+), resta (-), comparación (\>, \<) y permite su output a streams (ostream).
+  - **Fecha**: almacena día, mes y año. Permite la construcción a partir de string o enteros, y sobrecarga el operador de igualdad (==) para comparaciones.
+  - **Transaccion**: registra las operaciones realizadas. Contiene `IDTransaccion`, `IDCliente`, el `CBU` de la cuenta afectada, la `fecha` y el `monto` (de tipo Moneda).
