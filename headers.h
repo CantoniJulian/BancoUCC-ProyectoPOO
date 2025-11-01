@@ -4,6 +4,9 @@
 #include <vector>
 #include <map>
 #include <string>
+#include <ctime>
+#include <algorithm>
+
 using namespace std;
 
 struct GestorArchivos{
@@ -18,6 +21,7 @@ class Moneda{
     public:
         Moneda(double m, string d);
         Moneda(string d);
+        Moneda();
         double getMonto();
         string getDenominacion();
         friend Moneda operator+(const Moneda& m1, const Moneda& m2);
@@ -34,6 +38,7 @@ class Fecha{
         int mes;
         int anio;
     public:
+        Fecha();
         Fecha(int dia, int mes, int anio);
         Fecha(string fechaStr);
         int getDia();
@@ -64,12 +69,13 @@ class CajaAhorro{
 
 class Tarjeta{
     protected:
+        Moneda saldo;
         string nombreTarjeta;
         Moneda limite;
     public:
         Tarjeta(string nombre, Moneda lim);
         Moneda getLimite();
-        virtual ~Tarjeta() = default;
+        virtual ~Tarjeta() = default; //no es necesario que sea virtual
 };
 
 class Transaccion{
