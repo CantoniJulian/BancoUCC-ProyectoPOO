@@ -9,9 +9,18 @@
 
 using namespace std;
 
+class Cliente;
+
 struct GestorArchivos{
-    template<typename T> void guardar(vector<T*> datos, string NombreArchivo);
-    template<typename T> vector<T*> cargar(string NombreArchivo);
+    template<typename T>
+    void cargar(vector<T*>& datos, const string& NombreArchivo);
+    
+    template<typename T>
+    void guardar(const vector<T*>& datos, const string& NombreArchivo);
+    
+    // Metodos que requieren contexto de clientes
+    void guardarTarjetas(const vector<Cliente*>& clientes, const string& NombreArchivo);
+    void guardarCuentas(const vector<Cliente*>& clientes, const string& NombreArchivo);
 };
 
 class Moneda{
@@ -75,7 +84,8 @@ class Tarjeta{
     public:
         Tarjeta(string nombre, Moneda lim);
         Moneda getLimite();
-        virtual ~Tarjeta() = default; //no es necesario que sea virtual
+        string getNombreTarjeta();
+        ~Tarjeta() = default;
 };
 
 class Transaccion{
@@ -88,7 +98,7 @@ class Transaccion{
         void generarIDTransaccion();
         friend class GestorArchivos;
     public:
-        Transaccion(string cbu, Moneda m);
+        Transaccion(string cbu, Moneda m, int idCliente);
         int getIDTransaccion();
         int getIDCliente();
         string getCBU();
@@ -129,6 +139,7 @@ class Cliente : public Persona {
         void setEstado(bool estado);
         void setTipoCliente(string tipo);
         void agregarCuenta(CajaAhorro* cuenta);
+        void eliminarCuenta(string cbu);
         void setTarjeta(Tarjeta* t);
         ~Cliente() = default;
 };
@@ -138,9 +149,9 @@ class Banco {
         vector<Cliente*> clientes;
         vector<Transaccion*> transacciones;
         GestorArchivos gestor;
-        map<double, double> tasasConversion;
         friend class GestorArchivos;
     public:
+        map<pair<string, string>, double> tasasConversion;
         Banco();
         bool altaCliente(Cliente* cliente);
         bool bajaCliente(double id);
@@ -149,6 +160,17 @@ class Banco {
         void informeTransacciones();
         void informeTransacciones(double id);
         void informeTransacciones(Fecha desde, Fecha hasta);
+        double convertirMoneda(double monto, string desde, string hacia);
+        void registrarTransaccion(Transaccion* trans);
+        CajaAhorro* buscarCuentaPorCBU(string cbu);
+        Cliente* buscarClientePorCBU(string cbu);
+        bool realizarDeposito(string cbu, double monto, string denominacion, double idClienteOperador);
+        bool realizarExtraccion(string cbu, double monto, string denominacion, double idClienteOperador);
+        Cliente* buscarClientePorID(double id);
+        bool crearCuentaParaCliente(double idCliente, string denominacion);
+        bool eliminarCuentaDeCliente(double idCliente, string cbu);
+        void guardarTarjetas();
+        ~Banco();
 };
 
 #endif

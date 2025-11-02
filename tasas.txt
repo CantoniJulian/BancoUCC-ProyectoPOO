@@ -1,0 +1,7 @@
+DenominacionOrigen,DenominacionDestino,Tasa
+ARS,USD,0.001
+USD,ARS,1000.0
+ARS,EUR,0.00095
+EUR,ARS,1052.63
+USD,EUR,0.95
+EUR,USD,1.053

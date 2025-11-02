@@ -1,0 +1,19 @@
+=== Banco inicializado ===
+Fecha: Sun Nov 02 02:24:20 2025
+Clientes cargados: 20
+Transacciones cargadas: 26
+=========================
+
+Alta de cliente: Vitar Santiago Peluche (DNI: 985348523) - Sun Nov 02 02:24:48 2025
+=== Banco inicializado ===
+Fecha: Sun Nov 02 02:30:25 2025
+Clientes cargados: 21
+Transacciones cargadas: 29
+=========================
+
+=== Banco inicializado ===
+Fecha: Sun Nov 02 02:31:05 2025
+Clientes cargados: 21
+Transacciones cargadas: 29
+=========================
+
