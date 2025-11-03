@@ -1,6 +1,5 @@
 #include "headers.h"
 #include <iostream>
-#include <cassert>
 #include <cmath>
 
 using namespace std;
@@ -185,11 +184,12 @@ void testTarjeta() {
 void testTransaccion() {
     cout << CYAN << "\n=== TESTING TRANSACCION ===" << RESET << endl;
     
-    // Test constructor
-    Transaccion* trans = new Transaccion("1234567890123456789012", Moneda(5000.0, "ARS"));
+    // Test constructor (ahora requiere IDCliente)
+    Transaccion* trans = new Transaccion("1234567890123456789012", Moneda(5000.0, "ARS"), 1001);
     testResult(trans->getCBU() == "1234567890123456789012" && 
                trans->getMonto().getMonto() == 5000.0 &&
-               trans->getIDTransaccion() > 0, 
+               trans->getIDTransaccion() > 0 &&
+               trans->getIDCliente() == 1001, 
                "Transaccion constructor y generacion ID");
     
     delete trans;
@@ -207,7 +207,7 @@ void testCliente() {
                "Cliente constructor");
     
     // Test estado inicial
-    testResult(cliente->getEstado() == false, "Cliente estado inicial");
+    testResult(cliente->getEstado() == true, "Cliente estado inicial");
     
     // Test setEstado
     cliente->setEstado(true);
@@ -390,19 +390,19 @@ void testClientesCuentasTarjetas() {
         // Verificar que los clientes se cargaron
         testResult(true, "Banco cargó clientes desde archivo");
         
-        // Probar buscar un cliente específico con ID conocido (4884 es Juan Perez)
+        // Probar buscar un cliente específico con ID conocido (1001 es Juan Perez)
         cout << YELLOW << "\nBuscando cliente Juan Perez (verificar cuentas y tarjeta):" << RESET << endl;
-        banco->buscarCliente(4884);
+        banco->buscarCliente(1001);
         testResult(true, "Cliente Juan Perez consultado");
         
-        // Probar buscar un cliente con múltiples cuentas (793 es Carlos Rodriguez)
+        // Probar buscar un cliente con múltiples cuentas (1003 es Carlos Rodriguez)
         cout << YELLOW << "\nBuscando cliente Carlos Rodriguez (3 cuentas):" << RESET << endl;
-        banco->buscarCliente(793);
+        banco->buscarCliente(1003);
         testResult(true, "Cliente Carlos Rodriguez con multiples cuentas");
         
-        // Probar buscar un cliente sin tarjeta (4650 es Maria Garcia - PLATA)
+        // Probar buscar un cliente sin tarjeta (1002 es Maria Garcia - PLATA)
         cout << YELLOW << "\nBuscando cliente Maria Garcia (sin tarjeta - PLATA):" << RESET << endl;
-        banco->buscarCliente(4650);
+        banco->buscarCliente(1002);
         testResult(true, "Cliente PLATA sin tarjeta");
         
         // Listado completo
@@ -450,10 +450,10 @@ void testIntegracion() {
                    cliente->getCuentas()[0]->getSaldo().getMonto() == 100000.0,
                    "Integracion cliente con cuentas y tarjeta");
         
-        // Crear transaccion
-        Transaccion* trans = new Transaccion(cuenta1->getCBU(), Moneda(5000.0, "ARS"));
-        testResult(trans->getCBU() == cuenta1->getCBU(), 
-                   "Integracion transaccion vinculada a cuenta");
+        // Crear transaccion (ahora requiere IDCliente)
+        Transaccion* trans = new Transaccion(cuenta1->getCBU(), Moneda(5000.0, "ARS"), cliente->getID());
+        testResult(trans->getCBU() == cuenta1->getCBU() && trans->getIDCliente() == cliente->getID(), 
+               "Integracion transaccion vinculada a cuenta");
         
         // Operaciones en cuenta
         bool extraccionOk = cuenta1->extraer(Moneda(10000.0, "ARS"));

@@ -1,0 +1,1 @@
+IDCliente,NombreTarjeta,Limite,Denominacion

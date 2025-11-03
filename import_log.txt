@@ -17,3 +17,110 @@ Clientes cargados: 21
 Transacciones cargadas: 29
 =========================
 
+=== Banco inicializado ===
+Fecha: Mon Nov 03 08:16:04 2025
+Clientes cargados: 21
+Transacciones cargadas: 29
+=========================
+
+=== Banco inicializado ===
+Fecha: Mon Nov 03 08:19:46 2025
+Clientes cargados: 21
+Transacciones cargadas: 29
+=========================
+
+=== Banco inicializado ===
+Fecha: Mon Nov 03 08:22:01 2025
+Clientes cargados: 21
+Transacciones cargadas: 30
+=========================
+
+Alta de cliente: Santiago Berns (DNI: 57384728) - Mon Nov 03 08:24:12 2025
+=== Banco inicializado ===
+Fecha: Mon Nov 03 08:29:26 2025
+Clientes cargados: 22
+Transacciones cargadas: 30
+=========================
+
+=== Banco inicializado ===
+Fecha: Mon Nov 03 08:31:35 2025
+Clientes cargados: 22
+Transacciones cargadas: 30
+=========================
+
+Alta de cliente: Test Cliente (DNI: 99999999) - Mon Nov 03 08:31:35 2025
+Baja de cliente: Test Cliente (ID: 8087) - Mon Nov 03 08:31:35 2025
+=== Banco inicializado ===
+Fecha: Mon Nov 03 08:31:35 2025
+Clientes cargados: 23
+Transacciones cargadas: 30
+=========================
+
+=== Banco inicializado ===
+Fecha: Mon Nov 03 08:31:35 2025
+Clientes cargados: 23
+Transacciones cargadas: 30
+=========================
+
+=== Banco inicializado ===
+Fecha: Mon Nov 03 08:32:15 2025
+Clientes cargados: 23
+Transacciones cargadas: 30
+=========================
+
+=== Banco inicializado ===
+Fecha: Mon Nov 03 08:37:07 2025
+Clientes cargados: 23
+Transacciones cargadas: 30
+=========================
+
+=== Banco inicializado ===
+Fecha: Mon Nov 03 08:39:04 2025
+Clientes cargados: 23
+Transacciones cargadas: 30
+=========================
+
+Alta de cliente:  (DNI: 690489314) - Mon Nov 03 08:39:42 2025
+=== Banco inicializado ===
+Fecha: Mon Nov 03 08:41:08 2025
+Clientes cargados: 23
+Transacciones cargadas: 30
+=========================
+
+=== Banco inicializado ===
+Fecha: Mon Nov 03 08:43:11 2025
+Clientes cargados: 23
+Transacciones cargadas: 30
+=========================
+
+=== Banco inicializado ===
+Fecha: Mon Nov 03 08:45:07 2025
+Clientes cargados: 23
+Transacciones cargadas: 30
+=========================
+
+=== Banco inicializado ===
+Fecha: Mon Nov 03 08:48:56 2025
+Clientes cargados: 23
+Transacciones cargadas: 37
+=========================
+
+=== Banco inicializado ===
+Fecha: Mon Nov 03 08:50:33 2025
+Clientes cargados: 23
+Transacciones cargadas: 39
+=========================
+
+=== Banco inicializado ===
+Fecha: Mon Nov 03 09:24:50 2025
+Clientes cargados: 23
+Transacciones cargadas: 39
+=========================
+
+Alta de cliente: Pwpw (DNI: 54123456) - Mon Nov 03 09:25:34 2025
+=== Banco inicializado ===
+Fecha: Mon Nov 03 09:26:23 2025
+Clientes cargados: 24
+Transacciones cargadas: 39
+=========================
+

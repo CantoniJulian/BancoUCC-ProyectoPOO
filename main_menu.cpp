@@ -16,6 +16,7 @@ using namespace std;
 #define BOLD    "\033[1m"
 
 void limpiarBuffer() {
+    system("cls");
     cin.clear();
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 }
